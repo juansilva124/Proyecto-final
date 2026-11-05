@@ -9,6 +9,9 @@ public abstract class vehiculos {
         this.placa = placa;
     }
 
+    public String getPlaca(){
+        return this.placa;
+    }
     public abstract String getTipo();
 
     public abstract long getPrecioporminuto();

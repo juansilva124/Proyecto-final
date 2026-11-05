@@ -53,6 +53,7 @@ public class Archivos {
                         numerotiquete++;
                         t.setNumero(numerotiquete);
                         arr.add(t);
+                        System.out.println("Tiquete "+t.getNumero()+" fue asignado a el vehiculo con placa: "+t.getVehiculo().getPlaca());
 
                     }else {
                         System.out.println("La linea: "+ a +" no es valida");
