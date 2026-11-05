@@ -37,6 +37,7 @@ public class Archivos {
                                 if(ti.getVehiculo().getPlaca().equals(partes[1])){
                                     LocalDateTime salida=ControladorFechas.deStringafechayhora(partes[2],"yyyy-MM-dd HH:mm");
                                     System.out.println(salida);
+                                    //Falta por terminar aqui
                                 }
                             }
                         }
