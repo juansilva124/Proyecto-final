@@ -25,6 +25,14 @@ public class Archivos {
                             try {
                                 c.laplacaesvalida();
                                 t=new Tiquete(c);
+                                LocalDateTime temp;
+                                temp=ControladorFechas.deStringafechayhora(partes[3],"yyyy-MM-dd HH:mm");
+                                t.setEntrada(temp);
+                                numerotiquete++;
+                                t.setNumero(numerotiquete);
+                                arr.add(t);
+                                System.out.println("Tiquete "+t.getNumero()+" fue asignado a el vehiculo con placa: "+t.getVehiculo().getPlaca());
+
                             }catch (PlacaInvalidaException e){
                                 System.out.println(e.getMessage());
                             }
@@ -33,6 +41,13 @@ public class Archivos {
                             try {
                                 m.laplacaesvalida();
                                 t=new Tiquete(m);
+                                LocalDateTime temp;
+                                temp=ControladorFechas.deStringafechayhora(partes[3],"yyyy-MM-dd HH:mm");
+                                t.setEntrada(temp);
+                                numerotiquete++;
+                                t.setNumero(numerotiquete);
+                                arr.add(t);
+                                System.out.println("Tiquete "+t.getNumero()+" fue asignado a el vehiculo con placa: "+t.getVehiculo().getPlaca());
                             }catch (PlacaInvalidaException e){
                                 System.out.println(e.getMessage());
                             }
@@ -41,20 +56,19 @@ public class Archivos {
                             try {
                                 elec.laplacaesvalida();
                                 t=new Tiquete(elec);
+                                LocalDateTime temp;
+                                temp=ControladorFechas.deStringafechayhora(partes[3],"yyyy-MM-dd HH:mm");
+                                t.setEntrada(temp);
+                                numerotiquete++;
+                                t.setNumero(numerotiquete);
+                                arr.add(t);
+                                System.out.println("Tiquete "+t.getNumero()+" fue asignado a el vehiculo con placa: "+t.getVehiculo().getPlaca());
                             }catch (PlacaInvalidaException e){
                                 System.out.println(e.getMessage());
                             }
                         }else{
                             System.out.println("El tipo de vehiculo es incorrecto");
                         }
-                        LocalDateTime temp;
-                        temp=ControladorFechas.deStringafechayhora(partes[3],"yyyy-MM-dd HH:mm");
-                        t.setEntrada(temp);
-                        numerotiquete++;
-                        t.setNumero(numerotiquete);
-                        arr.add(t);
-                        System.out.println("Tiquete "+t.getNumero()+" fue asignado a el vehiculo con placa: "+t.getVehiculo().getPlaca());
-
                     }else {
                         System.out.println("La linea: "+ a +" no es valida");
                     }
