@@ -1,8 +1,10 @@
 package edu.puj.Model;
 
 import edu.puj.Excepciones.FechaSalidaInvalidaException;
+import edu.puj.Excepciones.VehiculoYaAdentroException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Tiquete{
     private int numero;
@@ -73,5 +75,13 @@ public class Tiquete{
     }
     public void cerrartiquete(LocalDateTime fecha)throws FechaSalidaInvalidaException {
         if(ControladorFechas.esAntes(fecha,this.entrada));
+    }
+
+    public static void estarepetida (ArrayList<Tiquete>t,String placa) throws VehiculoYaAdentroException{
+        for(Tiquete ti:t){
+            if(ti.getVehiculo().getPlaca().equalsIgnoreCase(placa)){
+                throw  new VehiculoYaAdentroException("El vehiculo con placa "+placa+" ya se encuentra dentro del parqueadero");
+            }
+        }
     }
 }
