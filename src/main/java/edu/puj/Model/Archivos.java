@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class Archivos {
     public static ArrayList<Tiquete> Leermovimientostxt (ArrayList<Tiquete> tiquetes) throws VehiculoNoEncontradoException {
-        ArrayList<Tiquete> arr =new ArrayList<>();
+        ArrayList<Tiquete> arr =tiquetes;
         try(BufferedReader reader = new BufferedReader(new FileReader("Movimientos.txt"))){
             String a;
             Tiquete t = null;
@@ -20,12 +20,25 @@ public class Archivos {
 
                     String[] partes = a.split("\\*");
                     if (partes[0].equalsIgnoreCase("S")) {
+                        int aux=0;
                         try {
                             Tiquete.estarepetida(arr,partes[1]);
+                            throw  new VehiculoNoEncontradoException("El vehiculo con placas "+ partes[1]+" no ha entrado al estacionamiento");
                         } catch (VehiculoYaAdentroException e) {
                             System.out.println("Busacando tiquete");
+                            aux=1;
+                        }catch(VehiculoNoEncontradoException e){
+                            System.out.println(e.getMessage());
                         } catch (Exception e){
                             System.out.println(e.getClass()+" "+e.getMessage());
+                        }
+                        if(aux==1){
+                            for(Tiquete ti:arr){
+                                if(ti.getVehiculo().getPlaca().equals(partes[1])){
+                                    LocalDateTime salida=ControladorFechas.deStringafechayhora(partes[2],"yyyy-MM-dd HH:mm");
+                                    System.out.println(salida);
+                                }
+                            }
                         }
                     } else if (partes[0].equalsIgnoreCase("E")) {
                         if(partes[2].equalsIgnoreCase("Carro")){
@@ -49,7 +62,6 @@ public class Archivos {
                             Moto m =new Moto(partes[1]);
                             try {
                                 m.laplacaesvalida();
-                                Tiquete.estarepetida(tiquetes,m.getPlaca());
                                 Tiquete.estarepetida(arr,m.getPlaca());
                                 t=new Tiquete(m);
                                 LocalDateTime temp;
@@ -66,7 +78,6 @@ public class Archivos {
                             Electrico elec =new Electrico(partes[1]);
                             try {
                                 elec.laplacaesvalida();
-                                Tiquete.estarepetida(tiquetes,elec.getPlaca());
                                 Tiquete.estarepetida(arr,elec.getPlaca());
                                 t=new Tiquete(elec);
                                 LocalDateTime temp;
