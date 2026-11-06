@@ -48,8 +48,5 @@ Un rechazo no cambia el estado ni consume número de tiquete, y la carga contin�
 
 ## Estructura
 ```
-[modelo/]  [excepciones/]  [servicio/]  [persistencia/]  [ui/]
+[modelo/]  [excepciones/]  [negocio/]  [persistencia/]  [presentacion/]
 ```
-
-## Pruebas
-Se verificó con los casos de ejemplo del enunciado. [Estado de las pruebas]
