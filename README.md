@@ -6,12 +6,6 @@
 ## Descripción
 Aplicación de consola que gestiona un parqueadero: registra entradas y salidas, calcula el cobro de cada tiquete (con convenios y mensualidades), procesa archivos de movimientos y genera el cierre diario.
 
-## Ejecución
-```bash
-[comando para compilar]
-[comando para ejecutar]
-```
-Requisitos: [Java 17 / otro]
 
 ## Reglas de negocio
 
