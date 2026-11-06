@@ -1,8 +1,9 @@
-package edu.puj.Model;
+package edu.puj.Persistencia;
 
 import edu.puj.Excepciones.PlacaInvalidaException;
 import edu.puj.Excepciones.VehiculoNoEncontradoException;
 import edu.puj.Excepciones.VehiculoYaAdentroException;
+import edu.puj.Model.*;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -35,7 +36,7 @@ public class Archivos {
                         if(aux==1){
                             for(Tiquete ti:arr){
                                 if(ti.getVehiculo().getPlaca().equals(partes[1])){
-                                    LocalDateTime salida=ControladorFechas.deStringafechayhora(partes[2],"yyyy-MM-dd HH:mm");
+                                    LocalDateTime salida= ControladorFechas.deStringafechayhora(partes[2],"yyyy-MM-dd HH:mm");
                                     System.out.println(salida);
                                     //Falta por terminar aqui
                                 }
