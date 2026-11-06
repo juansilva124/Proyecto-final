@@ -1,6 +1,7 @@
 package edu.puj.Presentacion;
 
 import edu.puj.Model.*;
+import edu.puj.Negocio.Parqueadero;
 import edu.puj.Persistencia.Archivos;
 
 import java.util.ArrayList;
@@ -8,8 +9,8 @@ public class App
 {
 
     public static void main(String[] args) {
-        ArrayList<Tiquete>t=new ArrayList<Tiquete>();
-        t= Archivos.Leermovimientostxt(t);
-        System.out.println(t.get(0).getVehiculo().getTipo());
+        Parqueadero Sistema = new Parqueadero();
+        Sistema.setTiquetes(Archivos.Leermovimientostxt(Sistema.getTiquetes(),Sistema));
+        System.out.println(Sistema.getTiquetes().get(0).getVehiculo().getTipo());
     }
 }
