@@ -10,7 +10,7 @@ public class App
 
     public static void main(String[] args) {
         Parqueadero Sistema = new Parqueadero();
-        Sistema.setTiquetes(Archivos.Leermovimientostxt(Sistema.getTiquetes(),Sistema));
+        Sistema.setTiquetes(Archivos.Leermovimientostxt(Sistema.getTiquetes()));
         System.out.println(Sistema.getTiquetes().get(0).getVehiculo().getTipo());
     }
 }
