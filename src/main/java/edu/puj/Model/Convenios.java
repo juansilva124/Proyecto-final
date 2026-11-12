@@ -9,4 +9,8 @@ public enum Convenios {
     Convenios(int minutos_gratis) {
         this.minutos_gratis=minutos_gratis;
     }
+
+    public int getMinutos_gratis() {
+        return minutos_gratis;
+    }
 }

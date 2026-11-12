@@ -1,6 +1,7 @@
 package edu.puj.Model;
 
 import edu.puj.Excepciones.FechaSalidaInvalidaException;
+import edu.puj.Excepciones.VehiculoNoEncontradoException;
 import edu.puj.Excepciones.VehiculoYaAdentroException;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,24 @@ public class Tiquete{
     private LocalDateTime salida;
     private long valor_de_parqueo;
     private long valor_recarga;
+    private Convenios convenio;
+    private boolean siguedentro;
 
+    public boolean isSiguedentro() {
+        return siguedentro;
+    }
+
+    public void setSiguedentro(boolean siguedentro) {
+        this.siguedentro = siguedentro;
+    }
+
+    public Convenios getConvenio() {
+        return convenio;
+    }
+
+    public void setConvenio(Convenios convenio) {
+        this.convenio = convenio;
+    }
 
     public Tiquete (vehiculos vehiculo){
         this.vehiculo=vehiculo;
@@ -67,21 +85,15 @@ public class Tiquete{
         this.valor_recarga = valor_recarga;
     }
 
-    public boolean vehiculoyaadentro(){
-        if(salida==null){
+    public boolean vehiculoyaadentro()throws VehiculoNoEncontradoException {
+        if(siguedentro){
             return true;
         }
-        return false;
+        throw  new VehiculoNoEncontradoException("El vehiculo ya salio del parqueadero");
     }
-    public void cerrartiquete(LocalDateTime fecha)throws FechaSalidaInvalidaException {
-        if(ControladorFechas.esAntes(fecha,this.entrada));
+    public void cerrartiquete(LocalDateTime fecha){
+        vehiculoyaadentro();
+
     }
 
-    public static void estarepetida (ArrayList<Tiquete>t,String placa) throws VehiculoYaAdentroException{
-        for(Tiquete ti:t){
-            if(ti.getVehiculo().getPlaca().equalsIgnoreCase(placa)){
-                throw  new VehiculoYaAdentroException("El vehiculo con placa "+placa+" ya se encuentra dentro del parqueadero");
-            }
-        }
-    }
 }

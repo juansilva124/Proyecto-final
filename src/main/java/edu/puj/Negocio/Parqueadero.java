@@ -1,5 +1,8 @@
 package edu.puj.Negocio;
 
+import edu.puj.Excepciones.FechaSalidaInvalidaException;
+import edu.puj.Excepciones.VehiculoNoEncontradoException;
+import edu.puj.Excepciones.VehiculoYaAdentroException;
 import edu.puj.Model.*;
 
 import java.time.LocalDate;
@@ -26,7 +29,18 @@ public class Parqueadero implements IParqueadero {
     public Tiquete registrar_entrada(vehiculos v, LocalDateTime entrada){
         return null;
     }
-    public Tiquete registrar_salida(String placa, LocalDateTime salida, Convenios convenio){
+    public Tiquete registrar_salida(String placa, LocalDateTime salida, Convenios convenio)throws FechaSalidaInvalidaException {
+        for(Tiquete t:this.tiquetes){
+            if(t.getVehiculo().getPlaca().equals(placa)){
+                if(ControladorFechas.esAntes(salida,t.getEntrada())){
+                    throw new FechaSalidaInvalidaException();
+                }
+                t.cerrartiquete(salida);
+                t.setSiguedentro(false);
+                t.setConvenio(convenio);
+                return t;
+            }
+        }
         return null;
     }
     public List<String> reporteVehiculosAdentro(){
@@ -51,5 +65,23 @@ public class Parqueadero implements IParqueadero {
     }
     public void agregar_mensualidad(Mensualidad m){
 
+    }
+    public void estarepetida (String placa) throws VehiculoYaAdentroException {
+        for(Tiquete ti:this.tiquetes){
+            if(ti.getVehiculo().getPlaca().equalsIgnoreCase(placa) && ti.isSiguedentro()){
+                throw  new VehiculoYaAdentroException("El vehiculo con placa "+placa+" ya se encuentra dentro del parqueadero");
+            }
+        }
+    }
+    public void aunestaadentro(String placa) throws VehiculoNoEncontradoException {
+        for(Tiquete t : this.tiquetes){
+            if(t.getVehiculo().getPlaca().equalsIgnoreCase(placa)){
+                if(t.vehiculoyaadentro()){
+                    System.out.println(t.vehiculoyaadentro());
+                    break;
+                }
+                break;
+            }
+        }
     }
 }

@@ -18,14 +18,19 @@ public abstract class vehiculos {
 
     public boolean laplacaesvalida() throws PlacaInvalidaException {
         if (this.placa.length() != 6) {
-            throw new PlacaInvalidaException("La placa es invialida ya que no tiene 6 digitos");
+            throw new PlacaInvalidaException("La placa es invalida ya que no tiene 6 digitos");
         }
 
         for (int i = 0; i < 3; i++) {
 
             if (!Character.isLetter(placa.charAt(i))) {
                 throw new PlacaInvalidaException(
-                        "Los primeros 3 caracteres deben ser letras"
+                        "Los primeros 3 caracteres de la placa  deben ser letras"
+                );
+            }
+            if (Character.isLowerCase(placa.charAt(i))) {
+                throw new PlacaInvalidaException(
+                        "Los primeros 3 caracteres de la placa  deben ser letras mayusculas"
                 );
             }
         }
@@ -34,7 +39,7 @@ public abstract class vehiculos {
 
             if (!Character.isDigit(placa.charAt(i))) {
                 throw new PlacaInvalidaException(
-                        "Los últimos 3 caracteres deben ser números"
+                        "Los últimos 3 caracteres de la placa deben ser números"
                 );
             }
         }
