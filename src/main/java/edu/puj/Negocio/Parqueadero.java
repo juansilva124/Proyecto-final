@@ -1,18 +1,15 @@
 package edu.puj.Negocio;
 
-import edu.puj.Model.Convenios;
-import edu.puj.Model.Mensualidad;
-import edu.puj.Model.Tiquete;
-import edu.puj.Model.vehiculos;
+import edu.puj.Model.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Parqueadero  implements  IParqueadero{
+public class Parqueadero implements IParqueadero {
     private int siguientenumero;
-    private ArrayList<Tiquete>tiquetes=new ArrayList<>();
+    private ArrayList<Tiquete> tiquetes=new ArrayList<>();
     private ArrayList<Mensualidad>Mensualidades=new ArrayList<>();
 
     public int getSiguientenumero() {
