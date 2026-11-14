@@ -91,9 +91,21 @@ public class Tiquete{
         }
         throw  new VehiculoNoEncontradoException("El vehiculo ya salio del parqueadero");
     }
-    public void cerrartiquete(LocalDateTime fecha){
+    public void cerrartiquete(LocalDateTime fecha) {
         vehiculoyaadentro();
-
+        long minutos= ControladorFechas.calcularDiferenciaMinutos(entrada,fecha)-convenio.getMinutos_gratis();
+        if(minutos<0){
+            minutos=0;
+        }
+        long a=vehiculo.Calculartarifa(minutos);
+        if(vehiculo instanceof Electrico){
+            Electrico v=(Electrico) vehiculo;
+            valor_recarga= v.costorecarga(minutos);
+        }else{
+            valor_recarga=0;
+        }
+        this.valor_de_parqueo = a;
+        siguedentro=false;
     }
 
 }

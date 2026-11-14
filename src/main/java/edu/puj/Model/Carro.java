@@ -11,13 +11,11 @@ public class Carro extends vehiculos {
         return tipodev;
     }
 
-    public long getPrecioporminuto() {
+    public static long getPrecioporminuto() {
         return precioporminuto;
     }
 
-    public long Calculartarifa (int minutos) {
-        long totalapagar=0;
-        totalapagar=precioporminuto*minutos;
-        return minutos;
+    public long Calculartarifa (long minutos) {
+        return precioporminuto*minutos;
     }
 }

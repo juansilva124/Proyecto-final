@@ -36,6 +36,10 @@ public class ControladorFechas {
         return ChronoUnit.DAYS.between(inicio, fin);
     }
 
+    public static long calcularDiferenciaMinutos(LocalDateTime inicio, LocalDateTime fin) {
+        return ChronoUnit.MINUTES.between(inicio, fin);
+    }
+
     // Saber si una fecha es anterior a otra
     public static boolean esAntes(LocalDateTime fecha1, LocalDateTime fecha2) {
 

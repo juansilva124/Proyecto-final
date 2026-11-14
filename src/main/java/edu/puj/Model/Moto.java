@@ -12,15 +12,13 @@ public class Moto extends vehiculos{
     public String getTipo(){
         return tipodev;
     }
-    public long getPrecioporminuto() {
+    public static long getPrecioporminuto() {
         return precioporminuto;
     }
     public boolean laplacaesvalida () throws PlacaInvalidaException {
         return true;
     }
-    public long Calculartarifa(int minuto){
-        long valorapagar=0;
-        valorapagar=this.precioporminuto*minuto;
-        return valorapagar;
+    public long Calculartarifa(long minuto){
+        return precioporminuto*minuto;
     }
 }

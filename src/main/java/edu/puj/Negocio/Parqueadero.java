@@ -31,13 +31,16 @@ public class Parqueadero implements IParqueadero {
     }
     public Tiquete registrar_salida(String placa, LocalDateTime salida, Convenios convenio)throws FechaSalidaInvalidaException {
         for(Tiquete t:this.tiquetes){
-            if(t.getVehiculo().getPlaca().equals(placa)){
+            if(t.getVehiculo().getPlaca().equals(placa)&&t.isSiguedentro()){
                 if(ControladorFechas.esAntes(salida,t.getEntrada())){
                     throw new FechaSalidaInvalidaException();
                 }
-                t.cerrartiquete(salida);
-                t.setSiguedentro(false);
                 t.setConvenio(convenio);
+                try {
+                    t.cerrartiquete(salida);
+                } catch (Exception e) {
+                    t.setConvenio(null);
+                }
                 return t;
             }
         }

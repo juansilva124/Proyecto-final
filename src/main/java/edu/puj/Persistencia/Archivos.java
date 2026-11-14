@@ -44,6 +44,7 @@ public class Archivos {
                             Tiquete ti=null;
                             try {
                                 ti =p.registrar_salida(partes[1], salida, con);
+
                             }catch (Exception e){
                                 System.out.println(a+": "+e.getMessage());
                             }

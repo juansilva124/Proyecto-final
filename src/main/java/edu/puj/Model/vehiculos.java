@@ -1,5 +1,4 @@
 package edu.puj.Model;
-//Original
 import edu.puj.Excepciones.PlacaInvalidaException;
 
 public abstract class vehiculos {
@@ -14,7 +13,9 @@ public abstract class vehiculos {
     }
     public abstract String getTipo();
 
-    public abstract long getPrecioporminuto();
+    public static long getPrecioporminuto() {
+        return 0;
+    }
 
     public boolean laplacaesvalida() throws PlacaInvalidaException {
         if (this.placa.length() != 6) {
@@ -47,5 +48,5 @@ public abstract class vehiculos {
 
         return true;
     }
-    public abstract long Calculartarifa(int minutos);
+    public abstract long Calculartarifa(long minutos);
 }
