@@ -4,13 +4,15 @@ import edu.puj.Excepciones.FechaSalidaInvalidaException;
 import edu.puj.Excepciones.VehiculoNoEncontradoException;
 import edu.puj.Excepciones.VehiculoYaAdentroException;
 import edu.puj.Model.*;
+import edu.puj.Persistencia.Archivos;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Parqueadero implements IParqueadero {
+public class Parqueadero implements IParqueadero, Serializable {
     private int siguientenumero;
     private ArrayList<Tiquete> tiquetes=new ArrayList<>();
     private ArrayList<Mensualidad>Mensualidades=new ArrayList<>();
@@ -59,7 +61,53 @@ public class Parqueadero implements IParqueadero {
         return null;
     }
     public List<String> reporteCierre(LocalDate fecha){
-        return null;
+        ArrayList<String> cierre=new ArrayList<>();
+        String nombrear="Cierre ";
+        String titulo=nombrear.concat(ControladorFechas.formatearFecha(fecha,"yyyy-MM-dd"));
+        nombrear=titulo.concat(".txt");
+        cierre.add(titulo);
+        int c=0;
+        int m=0;
+        int E=0;
+        int totalv=0;
+        long totalc=0;
+        long totalm=0;
+        long totalE=0;
+        long totalp=0;
+        long totalr=0;
+        for(Tiquete t:tiquetes){
+            if(t.getSalida()!=null) {
+                String sal = ControladorFechas.formatearFecha(t.getSalida(), "yyyy-MM-dd");
+                LocalDate sa = ControladorFechas.convertirTextoAFecha(sal, "yyyy-MM-dd");
+                if (!t.isSiguedentro() && ControladorFechas.esIgual(sa, fecha)) {
+                    totalv++;
+                    if (t.getVehiculo() instanceof Electrico) {
+                        E++;
+                        totalE = t.getValor_de_parqueo() + totalE;
+                        totalr = totalr + t.getValor_recarga();
+                    } else if (t.getVehiculo() instanceof Carro) {
+                        c++;
+                        totalc = totalc + t.getValor_de_parqueo();
+                    } else if (t.getVehiculo() instanceof Moto) {
+                        m++;
+                        totalm = totalm + t.getValor_de_parqueo();
+                    }
+                }
+            }
+        }
+        totalp=totalc+totalE+totalm;
+        cierre.add((String.valueOf(totalv)));
+        cierre.add((String.valueOf(totalp)));
+        cierre.add((String.valueOf(totalr)));
+        cierre.add((String.valueOf(totalp+totalr)));
+        cierre.add((String.valueOf(c)));
+        cierre.add((String.valueOf(totalc)));
+        cierre.add((String.valueOf(m)));
+        cierre.add((String.valueOf(totalm)));
+        cierre.add((String.valueOf(E)));
+        cierre.add((String.valueOf(totalE)));
+        Archivos.escribircierre(nombrear,cierre);
+        return cierre;
     }
     public List<String>  reportePlacasFrecuentes(){
         return null;

@@ -6,6 +6,7 @@ import edu.puj.Negocio.Parqueadero;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Archivos {
     public static ArrayList<Tiquete> Leermovimientostxt (ArrayList<Tiquete> tiquetes, Parqueadero p){
@@ -120,6 +121,22 @@ public class Archivos {
         }
         return tiquetes;
     }
+    public static  void escribircierre(String nombrear, List<String>cierre){
+        try(BufferedWriter w=new BufferedWriter(new FileWriter(nombrear))){
+            w.write(cierre.get(0)+"\n");
+            w.write("Tiquetes = "+cierre.get(1)+"\n");
+            w.write("Parqueo = "+cierre.get(2)+"\n");
+            w.write("Recargas = "+cierre.get(3)+"\n");
+            w.write("Total = "+cierre.get(4)+"\n");
+            w.write("CARRO = "+"Tiquetes = "+cierre.get(5)+" Total = "+cierre.get(6)+"\n");
+            w.write("MOTO = "+"Tiquetes = "+cierre.get(7)+" Total = "+cierre.get(8)+"\n");
+            w.write("ELECTRICO = "+"Tiquetes = "+cierre.get(9)+" Total = "+cierre.get(10)+"\n");
+        }catch (IOException e){
+            System.out.println("Error creando el archivo del cierre: " + e.getMessage());
+        }catch (Exception e){
+            System.out.println("Error creando el archivo del cierre: "+e.getClass()+ e.getMessage());
+        }
+    }
     public static void escribirmovimientostxt(){
         String archivo="Movimientos.txt";
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(archivo,true))) {
@@ -127,5 +144,9 @@ public class Archivos {
         }catch(IOException e){
             System.out.println("Error al guardar el archivo Movimientos.txt: " + e.getMessage());
         }
+    }
+
+    public static void serializarsistema (){
+
     }
 }

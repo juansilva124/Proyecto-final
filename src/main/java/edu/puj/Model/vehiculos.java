@@ -1,7 +1,8 @@
 package edu.puj.Model;
 import edu.puj.Excepciones.PlacaInvalidaException;
+import java.io.Serializable;
 
-public abstract class vehiculos {
+public abstract class vehiculos  implements Serializable {
     private String placa;
 
     public vehiculos(String placa) {

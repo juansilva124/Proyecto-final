@@ -104,8 +104,9 @@ public class Tiquete{
         }else{
             valor_recarga=0;
         }
-        this.valor_de_parqueo = a;
+        this.valor_de_parqueo = a+valor_recarga;
         siguedentro=false;
+        this.salida=fecha;
     }
 
 }
