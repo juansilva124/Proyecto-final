@@ -13,7 +13,7 @@ public class Archivos {
         try(BufferedReader reader = new BufferedReader(new FileReader("Movimientos.txt"))){
             String a;
             Tiquete t;
-            int numerotiquete =0;
+            int numerotiquete = p.getSiguientenumero();
             while((a=reader.readLine())!= null ) {
                 if(!a.contains("#")) {
 
@@ -71,6 +71,7 @@ public class Archivos {
                                 t.setNumero(numerotiquete);
                                 t.setSiguedentro(true);
                                 tiquetes.add(t);
+                                p.setSiguientenumero(numerotiquete);
                                 System.out.println(a+":Tiquete "+t.getNumero()+" fue asignado a el vehiculo con placa: "+t.getVehiculo().getPlaca());
 
                             }catch (Exception e){
@@ -87,6 +88,7 @@ public class Archivos {
                                 t.setNumero(numerotiquete);
                                 t.setSiguedentro(true);
                                 tiquetes.add(t);
+                                p.setSiguientenumero(numerotiquete);
                                 System.out.println(a+": Tiquete "+t.getNumero()+" fue asignado a el vehiculo con placa: "+t.getVehiculo().getPlaca());
                             }catch (Exception e){
                                 System.out.println(a+": "+e.getMessage());
@@ -102,6 +104,7 @@ public class Archivos {
                                 t.setNumero(numerotiquete);
                                 t.setSiguedentro(true);
                                 tiquetes.add(t);
+                                p.setSiguientenumero(numerotiquete);
                                 System.out.println(a+": Tiquete "+t.getNumero()+" fue asignado a el vehiculo con placa: "+t.getVehiculo().getPlaca());
                             }catch (Exception e){
                                 System.out.println(a+": "+e.getMessage());
@@ -146,7 +149,14 @@ public class Archivos {
         }
     }
 
-    public static void serializarsistema (){
-
+    public static void serializarsistema (Parqueadero p){
+        String nombrear ="Sistema.dat";
+        try(ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(nombrear))){
+                os.writeObject(p);
+        }catch (IOException e){
+            System.out.println("Error al serializar el sistema:" + e.getMessage());
+        }catch (Exception e){
+        System.out.println("Error al serializar el sistema: "+e.getClass()+ e.getMessage());
+    }
     }
 }
