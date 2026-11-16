@@ -45,9 +45,14 @@ public class ControladorFechas {
 
         return fecha1.isBefore(fecha2);
     }
-
+    public static boolean esAntes(LocalDate fecha1, LocalDate fecha2) {
+        return fecha1.isBefore(fecha2);
+    }
     // Saber si una fecha es posterior a otra
     public static boolean esDespues(LocalDate fecha1, LocalDate fecha2) {
+        return fecha1.isAfter(fecha2);
+    }
+    public static boolean esDespues(LocalDateTime fecha1, LocalDateTime fecha2) {
         return fecha1.isAfter(fecha2);
     }
 

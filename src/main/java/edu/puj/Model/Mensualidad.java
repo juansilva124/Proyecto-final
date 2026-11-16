@@ -32,7 +32,7 @@ public class Mensualidad {
     }
 
     public boolean cubre(LocalDate fecha){
-        if(ControladorFechas.esDespues(fecha,fin)){
+        if(ControladorFechas.esDespues(fecha,fin)&& ControladorFechas.esAntes(fecha,inicio)){
             return false;
         }
         return true;
