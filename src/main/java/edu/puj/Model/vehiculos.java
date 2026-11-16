@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public abstract class vehiculos  implements Serializable {
     private String placa;
+    private static final long  serialVersionUID = 1L;
 
     public vehiculos(String placa) {
         this.placa = placa;

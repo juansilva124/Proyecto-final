@@ -3,11 +3,12 @@ package edu.puj.Model;
 import edu.puj.Excepciones.FechaSalidaInvalidaException;
 import edu.puj.Excepciones.VehiculoNoEncontradoException;
 import edu.puj.Excepciones.VehiculoYaAdentroException;
-
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Tiquete{
+public class Tiquete implements Serializable {
+    private static final long  serialVersionUID = 1L;
     private int numero;
     private LocalDateTime entrada;
     private vehiculos vehiculo;
