@@ -24,6 +24,10 @@ public class ControladorFechas {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(formato);
         return fecha.format(formatter);
     }
+    public static String formatearFecha(LocalDateTime fecha, String formato) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(formato);
+        return fecha.format(formatter);
+    }
 
     // Convertir texto a LocalDate con formato
     public static LocalDate convertirTextoAFecha(String texto, String formato) throws DateTimeParseException {

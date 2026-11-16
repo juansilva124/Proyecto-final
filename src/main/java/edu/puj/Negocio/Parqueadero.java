@@ -31,6 +31,15 @@ public class Parqueadero implements IParqueadero {
     }
     public Tiquete registrar_salida(String placa, LocalDateTime salida, Convenios convenio)throws FechaSalidaInvalidaException {
         for(Tiquete t:this.tiquetes){
+            for(Mensualidad m: Mensualidades){
+                if(m.getPlaca().equals(placa)){
+                    String sal=ControladorFechas.formatearFecha(salida,"yyyy-MM-dd");
+                    if(m.cubre(ControladorFechas.convertirTextoAFecha(sal,"yyyy-MM-dd"))){
+                        System.out.println("Socio sea serio");
+                        break;
+                    }
+                }
+            }
             if(t.getVehiculo().getPlaca().equals(placa)&&t.isSiguedentro()){
                 if(ControladorFechas.esAntes(salida,t.getEntrada())){
                     throw new FechaSalidaInvalidaException();
@@ -67,7 +76,7 @@ public class Parqueadero implements IParqueadero {
         Mensualidades = mensualidades;
     }
     public void agregar_mensualidad(Mensualidad m){
-
+        Mensualidades.add(m);
     }
     public void estarepetida (String placa) throws VehiculoYaAdentroException {
         for(Tiquete ti:this.tiquetes){
