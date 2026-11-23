@@ -114,7 +114,7 @@ public class Tiquete implements Serializable {
         }else{
             valor_recarga=0;
         }
-        this.valor_de_parqueo = a+valor_recarga;
+        valor_de_parqueo=a;
         siguedentro=false;
         this.salida=fecha;
     }
