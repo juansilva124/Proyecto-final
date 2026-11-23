@@ -22,7 +22,9 @@ public class App {
         System.out.println("3. Registrar entrada");
         System.out.println("4. Registrar una salida");
         System.out.println("5. Ver vehículos adentro");
+        System.out.println("6. Cierre de caja de un día");
         System.out.println("7. Ver placas frecuentes");
+        System.out.println("8. Guardar el sistema");
         System.out.println("9. Cargar sistema");
         System.out.println("0. Salir");
         System.out.print("Seleccione una opción: ");
@@ -45,11 +47,16 @@ public class App {
                     case 5:
                         verVehiculosAdentro(parqueadero);
                         break;
-
+                    case 6:
+                        crearreportetxt(sn,parqueadero);
+                        break;
                     case 7:
                         verPlacasFrecuentes(parqueadero);
                         break;
-
+                    case 8:
+                        Archivos.serializarsistema(parqueadero);
+                        System.out.println("El sistemas se guardo correctamente en el archivo Sistema.dat");
+                        break;
                     case 9:
                         cargarSistema(sn,parqueadero);
                         break;
@@ -157,6 +164,7 @@ public class App {
                 }
             }
             t=p.registrar_salida(placa,ControladorFechas.obtenerFechaHoraActual(),convenios);
+            System.out.println(t.toString());
             System.out.println("Se registro la salida correctamente");
         }catch (Exception e){
             sc.nextLine();
@@ -172,7 +180,7 @@ public class App {
 
             System.out.println("\n===== VEHÍCULOS ADENTRO =====");
 
-            for (int i =2;i<reporte.toArray().length; i=i+2) {
+            for (int i =2;i<reporte.toArray().length; i=i+3) {
                 System.out.println("Tiquete numero:"+reporte.get(i-2));
                 System.out.println("Placa del vehiculo:"+reporte.get(i-1));
                 System.out.println("Tipo de vehiculo:"+reporte.get(i));
@@ -180,7 +188,25 @@ public class App {
             }
         }
     }
-
+    public static void crearreportetxt(Scanner sc, Parqueadero p){
+        List<String>reportedia=new ArrayList<>();
+        System.out.println("Ingrese la fecha de la cual quiere realizar el reporte en este formato (yyyy/mm/dd)");
+        try{
+            String fechastring=sc.next();
+            reportedia=p.reporteCierre(ControladorFechas.convertirTextoAFecha(fechastring,"yyyy/MM/dd"));
+            System.out.println(reportedia.get(0));
+            System.out.println("Tiquetes = " + reportedia.get(1));
+            System.out.println("Parqueo = " + reportedia.get(2));
+            System.out.println("Recargas = " + reportedia.get(3));
+            System.out.println("Total = " + reportedia.get(4));
+            System.out.println("CARRO = " + "Tiquetes = " + reportedia.get(5) + " Total = " + reportedia.get(6));
+            System.out.println("MOTO = " + "Tiquetes = " + reportedia.get(7) + " Total = " + reportedia.get(8));
+            System.out.println("ELECTRICO = " + "Tiquetes = " + reportedia.get(9) + " Total = " + reportedia.get(10));
+            System.out.println("\nCierre del dia creado correctamente");
+        } catch (Exception e) {
+            System.out.println("Error generando el cierre del dia: "+e.getMessage());
+        }
+    }
     public static void verPlacasFrecuentes(IParqueadero sistema) {
 
         List<String> reporte = sistema.reportePlacasFrecuentes();

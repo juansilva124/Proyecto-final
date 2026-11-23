@@ -121,4 +121,9 @@ public class Tiquete implements Serializable {
     public long getTotal() {
         return valor_de_parqueo + valor_recarga;
     }
+
+    @Override
+    public String toString() {
+        return "\nTiquete " +numero +":\n placa= " + vehiculo.getPlaca()+"| tipo de vehiculo= " + vehiculo.getTipo()+ "| entrada= " + ControladorFechas.formatearFecha(entrada,"dd/MM/yyyy HH:mm") + "| salida= " + ControladorFechas.formatearFecha(salida,"dd/MM/yyyy HH:mm") + "| \nconvenio="  + convenio+"| Descuento en el valor de parqueadero por convenio = "+convenio.getMinutos_gratis()+"%"+"\n"+"Valor de parqueadero = "+valor_de_parqueo+"\n"+"Valor de recarga = "+valor_recarga+"\n"+ "Total a pagar: "+getTotal();
+    }
 }

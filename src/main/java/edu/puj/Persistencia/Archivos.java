@@ -141,15 +141,6 @@ public class Archivos {
             System.out.println("Error creando el archivo del cierre: "+e.getClass()+ e.getMessage());
         }
     }
-    public static void escribirmovimientostxt(){
-        String archivo="Movimientos.txt";
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(archivo,true))) {
-            writer.write("uy");
-        }catch(IOException e){
-            System.out.println("Error al guardar el archivo Movimientos.txt: " + e.getMessage());
-        }
-    }
-
     public static void serializarsistema (Parqueadero p){
         String nombrear ="Sistema.dat";
         try(ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(nombrear))){
