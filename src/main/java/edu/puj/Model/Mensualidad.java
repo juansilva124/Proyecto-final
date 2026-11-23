@@ -6,7 +6,11 @@ public class Mensualidad {
     private String placa;
     private LocalDate inicio;
     private LocalDate fin;
-
+    public Mensualidad(String placa, LocalDate inicio, LocalDate fin) {
+        this.placa = placa;
+        this.inicio = inicio;
+        this.fin = fin;
+    }
     public String getPlaca() {
         return placa;
     }
@@ -36,5 +40,13 @@ public class Mensualidad {
             return false;
         }
         return true;
+    }
+    @Override
+    public String toString() {
+        return "mensualidad{" +
+                "placa='" + placa + '\'' +
+                ", inicio=" + inicio +
+                ", fin=" + fin +
+                '}';
     }
 }

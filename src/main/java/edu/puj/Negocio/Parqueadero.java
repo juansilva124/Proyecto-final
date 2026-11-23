@@ -1,8 +1,6 @@
 package edu.puj.Negocio;
 
-import edu.puj.Excepciones.FechaSalidaInvalidaException;
-import edu.puj.Excepciones.VehiculoNoEncontradoException;
-import edu.puj.Excepciones.VehiculoYaAdentroException;
+import edu.puj.Excepciones.*;
 import edu.puj.Model.*;
 import edu.puj.Persistencia.Archivos;
 
@@ -11,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Parqueadero implements IParqueadero, Serializable {
     private static final long  serialVersionUID = 1L;
@@ -29,9 +28,22 @@ public class Parqueadero implements IParqueadero, Serializable {
     public ArrayList<Tiquete> getTiquetes() {
         return tiquetes;
     }
-    public Tiquete registrar_entrada(vehiculos v, LocalDateTime entrada){
-        return null;
+    @Override
+    public Tiquete registrarEntrada(vehiculos v, LocalDateTime entrada) {
+        v.laplacaesvalida();
+        if (buscarAbierto(v.getPlaca()) != null) {
+            throw new VehiculoYaAdentroException(
+                    "El vehículo ya se encuentra en el parqueadero."
+            );
+        }
+
+        Tiquete nuevo = new Tiquete(siguientenumero, v, entrada, null, 0, 0);
+        tiquetes.add(nuevo);
+        siguienteNumero++;
+
+        return nuevo;
     }
+
     public Tiquete registrar_salida(String placa, LocalDateTime salida, Convenios convenio)throws FechaSalidaInvalidaException {
         for(Tiquete t:this.tiquetes){
             for(Mensualidad m: Mensualidades){
@@ -56,9 +68,6 @@ public class Parqueadero implements IParqueadero, Serializable {
                 return t;
             }
         }
-        return null;
-    }
-    public List<String> reporteVehiculosAdentro(){
         return null;
     }
     public List<String> reporteCierre(LocalDate fecha){
@@ -110,9 +119,6 @@ public class Parqueadero implements IParqueadero, Serializable {
         Archivos.escribircierre(nombrear,cierre);
         return cierre;
     }
-    public List<String>  reportePlacasFrecuentes(){
-        return null;
-    }
     public void setTiquetes(ArrayList<Tiquete> tiquetes) {
         this.tiquetes = tiquetes;
     }
@@ -134,15 +140,77 @@ public class Parqueadero implements IParqueadero, Serializable {
             }
         }
     }
-    public void aunestaadentro(String placa) throws VehiculoNoEncontradoException {
-        for(Tiquete t : this.tiquetes){
-            if(t.getVehiculo().getPlaca().equalsIgnoreCase(placa)){
-                if(t.vehiculoyaadentro()){
-                    System.out.println(t.vehiculoyaadentro());
-                    break;
+    @Override
+    public List<String> reportePlacasFrecuentes() {
+
+        ArrayList<String> placas = new ArrayList<>();
+        ArrayList<Integer> visitas = new ArrayList<>();
+        ArrayList<Long> pagos = new ArrayList<>();
+
+        for (Tiquete t : tiquetes) {
+            if (!t.isSiguedentro()) {
+                String placa = t.getVehiculo().getPlaca();
+                int posicion = placas.indexOf(placa);
+                if (posicion == -1) {
+                    placas.add(placa);
+                    visitas.add(1);
+                    pagos.add(t.getTotal());
+                } else {
+                    visitas.set(posicion, visitas.get(posicion) + 1);
+                    pagos.set(posicion, pagos.get(posicion) + t.getTotal());
                 }
-                break;
             }
         }
+        for (int i = 0; i < placas.size() - 1; i++) {
+            for (int j = 0; j < placas.size() - 1 - i; j++) {
+                boolean cambiar = false;
+                if (visitas.get(j) < visitas.get(j + 1)) {
+                    cambiar = true;
+
+                } else if (visitas.get(j).equals(visitas.get(j + 1))) {
+                    if (pagos.get(j) < pagos.get(j + 1)) {
+                        cambiar = true;
+
+                    } else if (pagos.get(j).equals(pagos.get(j + 1)) && placas.get(j).compareTo(placas.get(j + 1)) > 0) {
+                        cambiar = true;
+                    }
+                }
+                if (cambiar) {
+                    String placaAux = placas.get(j);
+                    placas.set(j, placas.get(j + 1));
+                    placas.set(j + 1, placaAux);
+                    int visitaAux = visitas.get(j);
+                    visitas.set(j, visitas.get(j + 1));
+                    visitas.set(j + 1, visitaAux);
+
+                    long pagoAux = pagos.get(j);
+                    pagos.set(j, pagos.get(j + 1));
+                    pagos.set(j + 1, pagoAux);
+                }
+            }
+        }
+
+        ArrayList<String> reporte = new ArrayList<>();
+
+        int limite = Math.min(3, placas.size());
+        for (int i = 0; i < limite; i++) {
+            reporte.add("Placa: " + placas.get(i) + " | Visitas: " + visitas.get(i) + " | Total pagado: " + pagos.get(i));
+        }
+
+        return reporte;
+    }
+    @Override
+    public ArrayList<String> reporteVehiculosAdentro() {
+
+        ArrayList<String> abiertos = new ArrayList<>();
+
+        for (Tiquete t : tiquetes) {
+            if (t.isSiguedentro()) {
+                abiertos.add(String.valueOf(t.getNumero()));
+                abiertos.add(String.valueOf(t.getVehiculo().getPlaca()));
+                abiertos.add(String.valueOf(t.getVehiculo().getTipo()));
+            }
+        }
+        return  abiertos;
     }
 }

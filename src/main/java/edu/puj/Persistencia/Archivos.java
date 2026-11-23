@@ -2,8 +2,10 @@ package edu.puj.Persistencia;
 
 import edu.puj.Excepciones.VehiculoYaAdentroException;
 import edu.puj.Model.*;
+import edu.puj.Negocio.IParqueadero;
 import edu.puj.Negocio.Parqueadero;
 import java.io.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -159,4 +161,76 @@ public class Archivos {
         System.out.println("Error al serializar el sistema: "+e.getClass()+ e.getMessage());
     }
     }
+    public static List<String> cargarMensualidades(String ruta, IParqueadero sistema) {
+
+        ArrayList<String> resultados = new ArrayList<>();
+
+        try (BufferedReader lector = new BufferedReader(new FileReader(ruta))) {
+
+            String linea;
+            int numeroLinea = 0;
+
+            while ((linea = lector.readLine()) != null) {
+
+                numeroLinea++;
+
+                if (linea.trim().isEmpty() || linea.trim().startsWith("#")) {
+                    continue;
+                }
+
+                try {
+
+                    String[] datos = linea.split("\\*");
+                    if (datos.length != 3) {
+                        throw new IllegalArgumentException(
+                                "La línea debe tener tres datos.");
+                    }
+
+                    String placa = datos[0].trim();
+
+                    LocalDate inicio = LocalDate.parse(datos[1].trim());
+
+                    LocalDate fin = LocalDate.parse(datos[2].trim());
+
+                    Mensualidad mensualidad = new Mensualidad(placa, inicio, fin);
+
+                    sistema.agregar_mensualidad(mensualidad);
+
+                    resultados.add("Mensualidad cargada correctamente: " + placa);
+
+                } catch (Exception e) {
+
+                    resultados.add("Error en la línea " + numeroLinea + ": " + e.getMessage());
+                }
+            }
+
+        } catch (IOException e) {
+
+            resultados.add("Error al leer el archivo: " + e.getMessage());
+        }
+
+        return resultados;
+    }
+    public static IParqueadero cargarSistema(String ruta) {
+
+        try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream(ruta))) {
+
+            Object objeto = entrada.readObject();
+
+            if (objeto instanceof IParqueadero) {
+
+                return (IParqueadero) objeto;
+
+            } else {
+
+                throw new IllegalStateException("El archivo no contiene un parqueadero válido.");
+            }
+
+        } catch (IOException | ClassNotFoundException e) {
+
+            throw new IllegalStateException("Error al cargar el sistema: " + e.getMessage());
+        }
+    }
+
 }
+
