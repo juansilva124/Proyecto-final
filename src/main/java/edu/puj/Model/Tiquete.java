@@ -18,6 +18,15 @@ public class Tiquete implements Serializable {
     private Convenios convenio;
     private boolean siguedentro;
 
+    public Tiquete(int numero, vehiculos vehiculo, LocalDateTime entrada, LocalDateTime salida, long valorParqueo, long valorRecarga) {
+        this.numero = numero;
+        this.vehiculo = vehiculo;
+        this.entrada = entrada;
+        this.salida = salida;
+        this.valor_de_parqueo = valorParqueo;
+        this.valor_recarga = valorRecarga;
+    }
+
     public boolean isSiguedentro() {
         return siguedentro;
     }
@@ -109,5 +118,7 @@ public class Tiquete implements Serializable {
         siguedentro=false;
         this.salida=fecha;
     }
-
+    public long getTotal() {
+        return valor_de_parqueo + valor_recarga;
+    }
 }
