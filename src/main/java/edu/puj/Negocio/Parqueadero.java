@@ -9,11 +9,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Parqueadero implements IParqueadero, Serializable {
     private static final long  serialVersionUID = 1L;
-    private int siguientenumero;
+    private int siguientenumero=1;
     private ArrayList<Tiquete> tiquetes=new ArrayList<>();
     private ArrayList<Mensualidad>Mensualidades=new ArrayList<>();
 
@@ -29,7 +28,7 @@ public class Parqueadero implements IParqueadero, Serializable {
         return tiquetes;
     }
     @Override
-    public Tiquete registrarEntrada(vehiculos v, LocalDateTime entrada) {
+    public Tiquete registrar_entrada(vehiculos v, LocalDateTime entrada) {
         v.laplacaesvalida();
         if (buscarAbierto(v.getPlaca()) != null) {
             throw new VehiculoYaAdentroException(
@@ -39,18 +38,25 @@ public class Parqueadero implements IParqueadero, Serializable {
 
         Tiquete nuevo = new Tiquete(siguientenumero, v, entrada, null, 0, 0);
         tiquetes.add(nuevo);
-        siguienteNumero++;
+        siguientenumero++;
 
         return nuevo;
     }
-
-    public Tiquete registrar_salida(String placa, LocalDateTime salida, Convenios convenio)throws FechaSalidaInvalidaException {
+    public Tiquete buscarAbierto(String placa) {
+        for (Tiquete t : tiquetes) {
+            if (t.getVehiculo().getPlaca().equals(placa) && t.isSiguedentro()) {
+                return t;
+            }
+        }
+        return null;
+    }
+    public Tiquete registrar_salida(String placa, LocalDateTime salida, Convenios convenio)throws FechaSalidaInvalidaException, VehiculoNoEncontradoException {
         for(Tiquete t:this.tiquetes){
             for(Mensualidad m: Mensualidades){
                 if(m.getPlaca().equals(placa)){
                     String sal=ControladorFechas.formatearFecha(salida,"yyyy-MM-dd");
                     if(m.cubre(ControladorFechas.convertirTextoAFecha(sal,"yyyy-MM-dd"))){
-                        System.out.println("Socio sea serio");
+                        System.out.println("La mensualidad no cubre la fecha ingresada ");
                         break;
                     }
                 }
@@ -68,7 +74,7 @@ public class Parqueadero implements IParqueadero, Serializable {
                 return t;
             }
         }
-        return null;
+        throw  new VehiculoNoEncontradoException("El vehiculo con placa "+placa+" no fue encontrado" );
     }
     public List<String> reporteCierre(LocalDate fecha){
         ArrayList<String> cierre=new ArrayList<>();

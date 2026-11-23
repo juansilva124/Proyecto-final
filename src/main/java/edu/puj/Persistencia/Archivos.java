@@ -69,13 +69,12 @@ public class Archivos {
                                 p.estarepetida(c.getPlaca());
                                 t=new Tiquete(c);
                                 t.setEntrada(temp);
-                                numerotiquete++;
                                 t.setNumero(numerotiquete);
                                 t.setSiguedentro(true);
                                 tiquetes.add(t);
-                                p.setSiguientenumero(numerotiquete);
                                 System.out.println(a+":Tiquete "+t.getNumero()+" fue asignado a el vehiculo con placa: "+t.getVehiculo().getPlaca());
-
+                                numerotiquete++;
+                                p.setSiguientenumero(numerotiquete);
                             }catch (Exception e){
                                 System.out.println(a+": "+e.getMessage());
                             }
@@ -86,12 +85,12 @@ public class Archivos {
                                 p.estarepetida(m.getPlaca());
                                 t=new Tiquete(m);
                                 t.setEntrada(temp);
-                                numerotiquete++;
                                 t.setNumero(numerotiquete);
                                 t.setSiguedentro(true);
                                 tiquetes.add(t);
-                                p.setSiguientenumero(numerotiquete);
                                 System.out.println(a+": Tiquete "+t.getNumero()+" fue asignado a el vehiculo con placa: "+t.getVehiculo().getPlaca());
+                                numerotiquete++;
+                                p.setSiguientenumero(numerotiquete);
                             }catch (Exception e){
                                 System.out.println(a+": "+e.getMessage());
                             }
@@ -102,12 +101,12 @@ public class Archivos {
                                 p.estarepetida(elec.getPlaca());
                                 t=new Tiquete(elec);
                                 t.setEntrada(temp);
-                                numerotiquete++;
                                 t.setNumero(numerotiquete);
                                 t.setSiguedentro(true);
                                 tiquetes.add(t);
-                                p.setSiguientenumero(numerotiquete);
                                 System.out.println(a+": Tiquete "+t.getNumero()+" fue asignado a el vehiculo con placa: "+t.getVehiculo().getPlaca());
+                                numerotiquete++;
+                                p.setSiguientenumero(numerotiquete);
                             }catch (Exception e){
                                 System.out.println(a+": "+e.getMessage());
                             }

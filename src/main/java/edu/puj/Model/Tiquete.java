@@ -16,7 +16,7 @@ public class Tiquete implements Serializable {
     private long valor_de_parqueo;
     private long valor_recarga;
     private Convenios convenio;
-    private boolean siguedentro;
+    private boolean siguedentro =true;
 
     public Tiquete(int numero, vehiculos vehiculo, LocalDateTime entrada, LocalDateTime salida, long valorParqueo, long valorRecarga) {
         this.numero = numero;

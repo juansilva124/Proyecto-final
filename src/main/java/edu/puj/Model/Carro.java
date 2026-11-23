@@ -7,6 +7,7 @@ public class Carro extends vehiculos {
     public Carro (String placa){
         super(placa);
     }
+
     public String getTipo() {
         return tipodev;
     }
