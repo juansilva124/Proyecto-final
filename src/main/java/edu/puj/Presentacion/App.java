@@ -172,8 +172,11 @@ public class App {
 
             System.out.println("\n===== VEHÍCULOS ADENTRO =====");
 
-            for (String dato : reporte) {
-                System.out.println(dato);
+            for (int i =2;i<reporte.toArray().length; i=i+2) {
+                System.out.println("Tiquete numero:"+reporte.get(i-2));
+                System.out.println("Placa del vehiculo:"+reporte.get(i-1));
+                System.out.println("Tipo de vehiculo:"+reporte.get(i));
+                System.out.println("----------------------------------");
             }
         }
     }
