@@ -199,6 +199,11 @@ public class Archivos {
 
                     LocalDate fin = LocalDate.parse(datos[2].trim());
 
+                    if(ControladorFechas.esAntes(fin,inicio)||ControladorFechas.esIgual(inicio,fin)){
+                        System.out.println(linea+": La fecha de inicio es despues de la de fin");
+                        continue;
+                    }
+
                     Mensualidad mensualidad = new Mensualidad(placa, inicio, fin);
 
                     sistema.agregar_mensualidad(mensualidad);
@@ -218,15 +223,15 @@ public class Archivos {
 
         return resultados;
     }
-    public static IParqueadero cargarSistema(String ruta) {
+    public static Parqueadero cargarSistema(String ruta) {
 
         try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream(ruta))) {
 
             Object objeto = entrada.readObject();
 
-            if (objeto instanceof IParqueadero) {
+            if (objeto instanceof Parqueadero) {
 
-                return (IParqueadero) objeto;
+                return (Parqueadero) objeto;
 
             } else {
 

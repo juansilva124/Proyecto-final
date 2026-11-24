@@ -1,8 +1,10 @@
 package edu.puj.Model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Mensualidad {
+public class Mensualidad implements Serializable {
+    private static final long  serialVersionUID = 1L;
     private String placa;
     private LocalDate inicio;
     private LocalDate fin;

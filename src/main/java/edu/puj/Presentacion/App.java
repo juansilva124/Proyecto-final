@@ -30,7 +30,7 @@ public class App {
         System.out.print("Seleccione una opción: ");
             try {
                 opcion = sn.nextInt();
-
+                sn.nextLine();
                 switch (opcion) {
                     case 1:
                         cargarMensualidades(sn,parqueadero);
@@ -58,7 +58,7 @@ public class App {
                         System.out.println("El sistemas se guardo correctamente en el archivo Sistema.dat");
                         break;
                     case 9:
-                        cargarSistema(sn,parqueadero);
+                        parqueadero=cargarSistema(sn);
                         break;
 
                     case 0:
@@ -231,8 +231,8 @@ public class App {
         }
     }
 
-    public static void cargarSistema(Scanner lector,IParqueadero sistema) {
-
+    public static Parqueadero cargarSistema(Scanner lector) {
+        Parqueadero sistema=null;
         System.out.print("Ingrese la ruta del archivo sistema.dat: ");
         String ruta = lector.nextLine();
 
@@ -246,5 +246,6 @@ public class App {
 
             System.out.println("No se pudo cargar el sistema: " + e.getMessage());
         }
+        return sistema;
     }
 }

@@ -28,7 +28,7 @@ public class Parqueadero implements IParqueadero, Serializable {
         return tiquetes;
     }
     @Override
-    public Tiquete registrar_entrada(vehiculos v, LocalDateTime entrada) {
+    public Tiquete registrar_entrada(vehiculos v, LocalDateTime entrada) throws VehiculoYaAdentroException {
         v.laplacaesvalida();
         if (buscarAbierto(v.getPlaca()) != null) {
             throw new VehiculoYaAdentroException(
