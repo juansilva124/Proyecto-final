@@ -4,9 +4,9 @@ import edu.puj.Model.*;
 import edu.puj.Negocio.IParqueadero;
 import edu.puj.Negocio.Parqueadero;
 import edu.puj.Persistencia.Archivos;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -36,7 +36,7 @@ public class App {
                         cargarMensualidades(sn,parqueadero);
                         break;
                     case 2:
-                        Archivos.Leermovimientostxt(parqueadero.getTiquetes(),parqueadero);
+                        leermovimientos(parqueadero);
                         break;
                     case 3:
                         registrarEntrada(sn,parqueadero);
@@ -70,7 +70,7 @@ public class App {
                         break;
                 }
 
-            } catch (NumberFormatException e) {
+            } catch (InputMismatchException e) {
                 System.out.println("Debe ingresar un número.");
             }
         }
@@ -94,6 +94,14 @@ public class App {
         } catch (Exception e) {
             System.out.println("Error al cargar mensualidades: "
                     + e.getMessage());
+        }
+    }
+
+    public  static void leermovimientos (Parqueadero parqueadero){
+
+        ArrayList<String> a = Archivos.Leermovimientostxt(parqueadero.getTiquetes(),parqueadero);
+        for(String s: a){
+            System.out.println(s);
         }
     }
 

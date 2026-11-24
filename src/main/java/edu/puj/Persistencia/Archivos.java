@@ -7,11 +7,13 @@ import edu.puj.Negocio.Parqueadero;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Archivos {
-    public static ArrayList<Tiquete> Leermovimientostxt (ArrayList<Tiquete> tiquetes, Parqueadero p){
+    public static ArrayList<String> Leermovimientostxt (ArrayList<Tiquete> tiquetes, Parqueadero p){
+        ArrayList<String> movimientos = new ArrayList<>();
         try(BufferedReader reader = new BufferedReader(new FileReader("Movimientos.txt"))){
             String a;
             Tiquete t;
@@ -20,6 +22,10 @@ public class Archivos {
                 if(!a.contains("#")) {
 
                     String[] partes = a.split("\\*");
+                    if(partes.length!=4){
+                        movimientos.add(a + ": La linea no tiene los datos necesarios");
+                        continue;
+                    }
                     if (partes[0].equalsIgnoreCase("S")) {
                         int aux=0;
                         try {
@@ -27,10 +33,16 @@ public class Archivos {
                         } catch (VehiculoYaAdentroException e) {
                             aux = 1;
                         }catch (Exception e){
-                            System.out.println(e.getClass()+" "+e.getMessage());
+                            movimientos.add(e.getClass()+" "+e.getMessage());
                         }
                         if(aux==1) {
-                            LocalDateTime salida = ControladorFechas.deStringafechayhora(partes[2], "yyyy-MM-dd HH:mm");
+                            LocalDateTime salida;
+                            try {
+                                salida = ControladorFechas.deStringafechayhora(partes[2], "yyyy-MM-dd HH:mm");
+                            } catch (DateTimeParseException e) {
+                                movimientos.add(a + ": La fecha no tiene el formato correcto");
+                                continue;
+                            }
                             Convenios con;
                             if (partes[3].equalsIgnoreCase("Ninguno")) {
                                 con = Convenios.NINGUNO;
@@ -41,7 +53,7 @@ public class Archivos {
                             } else if (partes[3].equalsIgnoreCase("Cine")) {
                                 con = Convenios.CINE;
                             } else {
-                                System.out.println(a + ": El convenio no es valido");
+                                movimientos.add(a + ": El convenio no es valido");
                                 continue;
                             }
                             Tiquete ti=null;
@@ -49,19 +61,24 @@ public class Archivos {
                                 ti =p.registrar_salida(partes[1], salida, con);
 
                             }catch (Exception e){
-                                System.out.println(a+": "+e.getMessage());
+                                movimientos.add(a+": "+e.getMessage());
                             }
 
                             if(ti!=null) {
-                                System.out.println(a + ": Se regisitro la salida del tiquete numero " + ti.getNumero() + " correctamente");
+                                movimientos.add(a + ": Se regisitro la salida del tiquete numero " + ti.getNumero() + " correctamente");
                             }
 
                         }else{
-                            System.out.println(a+": El vehiculo con placas "+partes[1]+" no esta registrado");
+                            movimientos.add(a+": El vehiculo con placas "+partes[1]+" no esta registrado");
                         }
                     } else if (partes[0].equalsIgnoreCase("E")) {
                         LocalDateTime temp;
-                        temp=ControladorFechas.deStringafechayhora(partes[3],"yyyy-MM-dd HH:mm");
+                        try {
+                            temp = ControladorFechas.deStringafechayhora(partes[3], "yyyy-MM-dd HH:mm");
+                        } catch (DateTimeParseException e) {
+                            movimientos.add(a + ": La fecha no tiene el formato correcto");
+                            continue;
+                        }
                         if(partes[2].equalsIgnoreCase("Carro")){
                             Carro c =new Carro(partes[1]);
                             try {
@@ -72,11 +89,11 @@ public class Archivos {
                                 t.setNumero(numerotiquete);
                                 t.setSiguedentro(true);
                                 tiquetes.add(t);
-                                System.out.println(a+":Tiquete "+t.getNumero()+" fue asignado a el vehiculo con placa: "+t.getVehiculo().getPlaca());
+                                movimientos.add(a+":Tiquete "+t.getNumero()+" fue asignado a el vehiculo con placa: "+t.getVehiculo().getPlaca());
                                 numerotiquete++;
                                 p.setSiguientenumero(numerotiquete);
                             }catch (Exception e){
-                                System.out.println(a+": "+e.getMessage());
+                                movimientos.add(a+": "+e.getMessage());
                             }
                         } else if (partes[2].equalsIgnoreCase("Moto")) {
                             Moto m =new Moto(partes[1]);
@@ -88,11 +105,11 @@ public class Archivos {
                                 t.setNumero(numerotiquete);
                                 t.setSiguedentro(true);
                                 tiquetes.add(t);
-                                System.out.println(a+": Tiquete "+t.getNumero()+" fue asignado a el vehiculo con placa: "+t.getVehiculo().getPlaca());
+                                movimientos.add(a+": Tiquete "+t.getNumero()+" fue asignado a el vehiculo con placa: "+t.getVehiculo().getPlaca());
                                 numerotiquete++;
                                 p.setSiguientenumero(numerotiquete);
                             }catch (Exception e){
-                                System.out.println(a+": "+e.getMessage());
+                                movimientos.add(a+": "+e.getMessage());
                             }
                         } else if (partes[2].equalsIgnoreCase("Electrico")) {
                             Electrico elec =new Electrico(partes[1]);
@@ -104,17 +121,17 @@ public class Archivos {
                                 t.setNumero(numerotiquete);
                                 t.setSiguedentro(true);
                                 tiquetes.add(t);
-                                System.out.println(a+": Tiquete "+t.getNumero()+" fue asignado a el vehiculo con placa: "+t.getVehiculo().getPlaca());
+                                movimientos.add(a+": Tiquete "+t.getNumero()+" fue asignado a el vehiculo con placa: "+t.getVehiculo().getPlaca());
                                 numerotiquete++;
                                 p.setSiguientenumero(numerotiquete);
                             }catch (Exception e){
-                                System.out.println(a+": "+e.getMessage());
+                                movimientos.add(a+": "+e.getMessage());
                             }
                         }else{
-                            System.out.println(a+": El tipo de vehiculo es incorrecto");
+                            movimientos.add(a+": El tipo de vehiculo es incorrecto");
                         }
                     }else {
-                        System.out.println(a+":La linea no es valida");
+                        movimientos.add(a+":La linea no es valida");
                     }
                 }
             }
@@ -123,7 +140,7 @@ public class Archivos {
         }catch (Exception e){
             System.out.println("Error leyendo los datos de Movimientos.txt: "+e.getClass()+ e.getMessage());
         }
-        return tiquetes;
+        return movimientos;
     }
     public static  void escribircierre(String nombrear, List<String>cierre){
         try(BufferedWriter w=new BufferedWriter(new FileWriter(nombrear))){
