@@ -4,9 +4,9 @@ import edu.puj.Model.*;
 import edu.puj.Negocio.IParqueadero;
 import edu.puj.Negocio.Parqueadero;
 import edu.puj.Persistencia.Archivos;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -30,13 +30,13 @@ public class App {
         System.out.print("Seleccione una opción: ");
             try {
                 opcion = sn.nextInt();
-
+                sn.nextLine();
                 switch (opcion) {
                     case 1:
                         cargarMensualidades(sn,parqueadero);
                         break;
                     case 2:
-                        Archivos.Leermovimientostxt(parqueadero.getTiquetes(),parqueadero);
+                        leermovimientos(parqueadero);
                         break;
                     case 3:
                         registrarEntrada(sn,parqueadero);
@@ -58,7 +58,7 @@ public class App {
                         System.out.println("El sistemas se guardo correctamente en el archivo Sistema.dat");
                         break;
                     case 9:
-                        cargarSistema(sn,parqueadero);
+                        parqueadero=cargarSistema(sn);
                         break;
 
                     case 0:
@@ -70,7 +70,7 @@ public class App {
                         break;
                 }
 
-            } catch (NumberFormatException e) {
+            } catch (InputMismatchException e) {
                 System.out.println("Debe ingresar un número.");
             }
         }
@@ -94,6 +94,14 @@ public class App {
         } catch (Exception e) {
             System.out.println("Error al cargar mensualidades: "
                     + e.getMessage());
+        }
+    }
+
+    public  static void leermovimientos (Parqueadero parqueadero){
+
+        ArrayList<String> a = Archivos.Leermovimientostxt(parqueadero.getTiquetes(),parqueadero);
+        for(String s: a){
+            System.out.println(s);
         }
     }
 
@@ -223,8 +231,8 @@ public class App {
         }
     }
 
-    public static void cargarSistema(Scanner lector,IParqueadero sistema) {
-
+    public static Parqueadero cargarSistema(Scanner lector) {
+        Parqueadero sistema=null;
         System.out.print("Ingrese la ruta del archivo sistema.dat: ");
         String ruta = lector.nextLine();
 
@@ -238,5 +246,6 @@ public class App {
 
             System.out.println("No se pudo cargar el sistema: " + e.getMessage());
         }
+        return sistema;
     }
 }

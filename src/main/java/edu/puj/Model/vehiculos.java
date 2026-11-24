@@ -3,7 +3,7 @@ import edu.puj.Excepciones.PlacaInvalidaException;
 import java.io.Serializable;
 
 public abstract class vehiculos  implements Serializable {
-    private String placa;
+    private final String placa;
     private static final long  serialVersionUID = 1L;
 
     public vehiculos(String placa) {
@@ -51,4 +51,7 @@ public abstract class vehiculos  implements Serializable {
         return true;
     }
     public abstract long Calculartarifa(long minutos);
+    public  long Cargoadicional(long minutos){
+        return  0;
+    }
 }

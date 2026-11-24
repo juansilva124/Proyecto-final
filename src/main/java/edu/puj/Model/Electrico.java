@@ -22,5 +22,8 @@ public class Electrico extends Carro implements Recargable{
         return totalapagar;
 
     }
+    public long Cargoadicional(long minutos){
+        return costorecarga(minutos);
+    }
 
 }
