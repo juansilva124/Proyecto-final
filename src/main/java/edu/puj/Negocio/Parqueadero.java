@@ -51,30 +51,29 @@ public class Parqueadero implements IParqueadero, Serializable {
         return null;
     }
     public Tiquete registrar_salida(String placa, LocalDateTime salida, Convenios convenio)throws FechaSalidaInvalidaException, VehiculoNoEncontradoException {
-        for(Tiquete t:this.tiquetes){
-            for(Mensualidad m: Mensualidades){
-                if(m.getPlaca().equals(placa)){
-                    String sal=ControladorFechas.formatearFecha(salida,"yyyy-MM-dd");
-                    if(m.cubre(ControladorFechas.convertirTextoAFecha(sal,"yyyy-MM-dd"))){
-                        System.out.println("La mensualidad no cubre la fecha ingresada ");
-                        break;
-                    }
-                }
-            }
-            if(t.getVehiculo().getPlaca().equals(placa)&&t.isSiguedentro()){
-                if(ControladorFechas.esAntes(salida,t.getEntrada())){
+        for (Tiquete t : this.tiquetes) {
+            if (t.getVehiculo().getPlaca().equals(placa) && t.isSiguedentro()) {
+                if (ControladorFechas.esAntes(salida, t.getEntrada())) {
                     throw new FechaSalidaInvalidaException();
+                }
+                boolean mensualidad = false;
+                LocalDate diaEntrada = t.getEntrada().toLocalDate();
+                LocalDate diaSalida = salida.toLocalDate();
+                for (Mensualidad m : Mensualidades) {
+                    if (m.getPlaca().equals(placa) && m.cubre(diaEntrada) && m.cubre(diaSalida)) {
+                        mensualidad = true;
+                    }
                 }
                 t.setConvenio(convenio);
                 try {
-                    t.cerrartiquete(salida);
+                    t.cerrartiquete(salida, mensualidad);
                 } catch (Exception e) {
                     t.setConvenio(null);
                 }
                 return t;
             }
         }
-        throw  new VehiculoNoEncontradoException("El vehiculo con placa "+placa+" no fue encontrado" );
+        throw new VehiculoNoEncontradoException("El vehiculo con placa " + placa + " no fue encontrado");
     }
     public List<String> reporteCierre(LocalDate fecha){
         ArrayList<String> cierre=new ArrayList<>();
@@ -89,7 +88,7 @@ public class Parqueadero implements IParqueadero, Serializable {
         long totalc=0;
         long totalm=0;
         long totalE=0;
-        long totalp=0;
+        long totalp;
         long totalr=0;
         for(Tiquete t:tiquetes){
             if(t.getSalida()!=null) {
@@ -97,14 +96,14 @@ public class Parqueadero implements IParqueadero, Serializable {
                 LocalDate sa = ControladorFechas.convertirTextoAFecha(sal, "yyyy-MM-dd");
                 if (!t.isSiguedentro() && ControladorFechas.esIgual(sa, fecha)) {
                     totalv++;
-                    if (t.getVehiculo() instanceof Electrico) {
+                    if (t.getVehiculo().getTipo().equals("Electrico")) {
                         E++;
                         totalE = t.getValor_de_parqueo() + totalE;
                         totalr = totalr + t.getValor_recarga();
-                    } else if (t.getVehiculo() instanceof Carro) {
+                    } else if (t.getVehiculo().getTipo().equals("Carro")) {
                         c++;
                         totalc = totalc + t.getValor_de_parqueo();
-                    } else if (t.getVehiculo() instanceof Moto) {
+                    } else if (t.getVehiculo().getTipo().equals("Moto")) {
                         m++;
                         totalm = totalm + t.getValor_de_parqueo();
                     }
